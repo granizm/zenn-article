@@ -9,6 +9,6 @@
     "list:articles": "zenn list:articles"
   },
   "devDependencies": {
-    "zenn-cli": "^0.1.0"
+    "zenn-cli": "^0.1.162"
   }
 }
