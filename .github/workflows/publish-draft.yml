@@ -1,0 +1,54 @@
+name: Publish Draft to Zenn
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'articles/**'
+      - 'books/**'
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install zenn-cli
+
+      - name: Validate articles
+        run: npx zenn list:articles
+
+      - name: Set articles to draft (published: false)
+        run: |
+          for file in articles/*.md; do
+            if [ -f "$file" ]; then
+              sed -i 's/^published: true$/published: false/' "$file"
+            fi
+          done
+          for dir in books/*/; do
+            if [ -d "$dir" ]; then
+              config="$dir/config.yaml"
+              if [ -f "$config" ]; then
+                sed -i 's/^published: true$/published: false/' "$config"
+              fi
+            fi
+          done
+
+      - name: Notify Discord (Draft)
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+              -H "Content-Type: application/json" \
+              -d "{\"content\": \"📝 Zenn下書きを作成しました\\nPR: ${{ github.event.pull_request.html_url }}\"}"
+          fi
