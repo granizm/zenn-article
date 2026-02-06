@@ -3,7 +3,7 @@ title: "GitHub Actionsでブログ記事を自動公開するシステムを構�
 emoji: "🚀"
 type: "tech"
 topics: ["githubactions", "automation", "blog", "cicd"]
-published: false
+published: true
 ---
 
 ## はじめに
