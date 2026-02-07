@@ -4,7 +4,7 @@
 
 - **Platform**: Zenn
 - **Language**: ja (日本語)
-- **Primary Audience**: 日本人エンジニア・開発者 (LLM 開発に興味あり)
+- **Primary Audience**: 日本人エンジニア・開発者
 
 ## Writing Guidelines
 
